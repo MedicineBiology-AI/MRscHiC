@@ -13,20 +13,17 @@ class AutoEncoder(nn.Module):
             nn.Linear(hid1, hid2),
             nn.Tanh(),
             nn.Linear(hid2, outdim),
-            #nn.ReLU(),
-            #nn.Linear(16, 2),
+
         )
 
         self.decoder = nn.Sequential(
-            #nn.Linear(2, 16),
-            #nn.ReLU(),
+
             nn.Linear(outdim,hid2),
             nn.Tanh(),
             nn.Linear(hid2, hid1),
             nn.Tanh(),
             nn.Linear(hid1, ndim),
-#            nn.Tanh()
-#            nn.Sigmoid()
+
         )
 
     def forward(self, x):
