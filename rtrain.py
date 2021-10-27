@@ -21,10 +21,9 @@ def plot_loss(epoch_list, train_loss_list, path):
 
 
 def similarity_mat(label_pred):
-    #    label_true=np.loadtxt('outputdata/flyamer_label_true.txt')
     label_pred = label_pred
     n1, = label_pred.shape
-    #    label_true=label_true.reshape((n1,1))
+
     label_pred = label_pred.reshape((n1, 1))
     sim_mat_pred = np.zeros((n1, n1))
     for i in range(n1):
@@ -39,24 +38,23 @@ def train(matrix):
     device = torch.device("cuda:0")
     dimm, dimension = matrix.shape
     ndim = dimension
-    # outdim = int(ndim * 0.2)
+
     hid1 = 900
     hid2 = 500
     outdim = 100
     EPOCH = 800
     LR = 4e-05
     decay = 1e-05
-    # EPOCH = 400
+
 
     autoencoder = AutoEncoder(ndim, outdim, hid1, hid2)
     autoencoder.to(device)
     optimizer = torch.optim.Adam(autoencoder.parameters(), lr=LR, weight_decay=decay)
-    # optimizer = torch.optim.Adam(autoencoder.parameters(), lr=LR)
-    # scheduler = torch.optim.lr_scheduler.ExponentialLR(optimizer, gamma=0.8, last_epoch=-1)
+
     loss_func = nn.MSELoss()
-    #    loss_func=loss_func
+
     loss_list = []
-    # matrix=matrix.cuda()
+
 
     for epoch in range(EPOCH):
         b_x = torch.from_numpy(matrix).unsqueeze(0).float().to(device)
@@ -67,16 +65,13 @@ def train(matrix):
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
-        # scheduler.step()
+
 
         print('Epoch: ', epoch, '| train loss: %.4f' % loss.data.cpu().numpy())
 
-    #    chr=str(c)
-    #    epoch_list=np.arange(1,EPOCH+1)
-    #    path='/Users/zhencaiwei/PycharmProjects/pythonProject/Ramani/picture/'+chr
-    # plot_loss(epoch_list,loss_list,path)
+
     encoded_data, _ = autoencoder(torch.from_numpy(matrix).unsqueeze(0).float().to(device))
-#    torch.save(autoencoder.state_dict(), 'save_model/ramani_model2.pkl')
+
     time.sleep(0.1)
     Q = encoded_data.squeeze(0)
     Q = Q.detach().cpu().numpy()
@@ -87,7 +82,7 @@ def train(matrix):
 
 if __name__ == "__main__":
     label = np.loadtxt('outputdata/ramani_label_true.txt')
-    matrix = np.loadtxt('/mnt/d/jjpeng/cwzhen/data/AE/top_pca/ramani_top15_mat.txt')
+    matrix = np.loadtxt('top_pca/ramani_top15_mat.txt')
     label_pred = KMeans(n_clusters=4, n_init=200).fit(matrix[:, :]).labels_
     ari0 = ARI(label, label_pred)
     print(matrix.shape)
@@ -95,7 +90,7 @@ if __name__ == "__main__":
     ari_list = []
     for i in range(10):
         mat_ae = train(matrix)
-        #    np.savetxt('outputdata/ramain_pca2chr0ae2cell_mat.txt',mat_ae)
+
 
         label_pred = KMeans(n_clusters=4, n_init=200).fit(mat_ae[:, :]).labels_
         ari1 = ARI(label, label_pred)
@@ -104,9 +99,9 @@ if __name__ == "__main__":
         ari_list.append(ari1)
 
     ari_list = np.array(ari_list)
-    np.savetxt('ari/10ramani_lx_top15_pca_ae_ari_table.csv', ari_list, delimiter=",")
+    np.savetxt('ari/10ramani_ari.csv', ari_list, delimiter=",")
     ari_ave = ari_list.sum() / 1
     print('ari_list: ',ari_list)
     print('ari_ave: ', ari_ave)
-#    np.savetxt('outputdata/ramain_pca2chr0ae2cell_label.txt', label_pred)
+
 

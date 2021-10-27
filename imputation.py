@@ -13,16 +13,11 @@ from sklearn.metrics.cluster import adjusted_rand_score as ARI
 #from rtrain import *
 from loadmodel import *
 from data_preprocess import *
-#from DeepAE import *
-#from flyamer_train import *
-#import vae
-#from multimodel import *
-#from multitrain import *
+
 
 def normalize(A, symmetric=True):
     # A = A+I
     A = A + torch.eye(A.size(0))
-    # 所有节点的�?
     d = A.sum(1)
     if symmetric:
         # D = D^-1/2
@@ -116,38 +111,13 @@ def dataprocess(network, chromsize, nc,  res=1000000, pad=1, rp=0.5, prct=95, nd
         Q_concat = np.array([result[index[x]][1] for x in network])
         print('adj closed!')
         
-#        n1, n2 = Q_concat.shape
-#        b = []
-#        for i in range(n2):
-#            chr_count = 0
-#            for j in range(n1):
-#                flag = 0
-#                if (Q_concat[j][i] != 0):
-#                    chr_count += 1
-#                if (chr_count >= n1*0.9):
-#                    b.append(Q_concat[0:n1, i])
-#                    flag = 1
-#                if (flag == 1):
-#                    break
-#            #print('feature ' + str(i) + 'count(0)=' + str(chr_count0))
-#
-#        b = np.array(b)
-#        Q_concat = b.T
-#        print('feature selection closed!')
-#        print(Q_concat.shape)
-        
-        #Q_concat=zscore(Q_concat)
-        #print("z_score closed!")
-#        Q_concat=standrad_scale(Q_concat)
-#        print('standrad_scale closed!')
-#        Q_concat=minmax_scale(Q_concat)
-#        print('minmax_scale closed!')
+
 
         if prct > -1:
             thres = np.percentile(Q_concat, 100 - prct, axis=1)
             Q_concat = (Q_concat > thres[:,None ])
 
-#        np.savetxt('final_mat/topmat01.csv',Q_concat,delimiter=',')
+
         ndim = int(min(Q_concat.shape)*0.95) - 1
         pca = PCA(n_components=ndim)
         R_reduce = pca.fit_transform(Q_concat)
@@ -157,9 +127,7 @@ def dataprocess(network, chromsize, nc,  res=1000000, pad=1, rp=0.5, prct=95, nd
 #        print('AE->chromosome closed!')
 #        print(R_reduce.shape)
         
-#        R_reduce = vae.Dhaka(Q_concat)
-#        print('VAE->chromosome closed!')
-#        print(R_reduce.shape)
+
 
 
 #        ndim = int(min(Q_concat.shape) * 0.15) - 1
@@ -173,20 +141,6 @@ def dataprocess(network, chromsize, nc,  res=1000000, pad=1, rp=0.5, prct=95, nd
         matrix.append(R_reduce)
         print(c)
     matrix = np.concatenate(matrix, axis=1)
-    np.savetxt('copy4_pca/flyamer_copy4_top95_mat.txt',matrix)
-    print(matrix.shape)
-    kmeans = KMeans(n_clusters=nc, n_init=200).fit(matrix[:, :ndim])
-    label_true=np.loadtxt('outputdata/flyamer_copy4_label_true.txt')
-    ari_20=ARI(label_true,kmeans.labels_)
-    print('ari_20: ',ari_20)
-    kmeans = KMeans(n_clusters=nc, n_init=200).fit(matrix[:, :])
-    ari_all=ARI(label_true,kmeans.labels_)
-    print('ari_all: ',ari_all)
-    matrix_reduce=train(matrix)
-
-    
-#    matrix=np.concatenate(matrix,axis=1)
-#    matrix_reduce = vae.Dhaka(matrix)
 
 #    pca = PCA(n_components=min(matrix.shape) - 1)
 #    matrix_reduce = pca.fit_transform(matrix)
