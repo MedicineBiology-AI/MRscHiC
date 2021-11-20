@@ -85,7 +85,7 @@ Information in this file: the location information of the cells that are input t
 ## Usage
 ### 1.Run MRscHiC_run.py to convert input files（contact matrix file & cell list file） to feature matrix.
 
-    $ python MRscHiC.py
+    $ python MRscHiC_run.py
 
 ### 2.Run ftrain.py (Flyamer dataset) or rtrain.py (Ramani dataset 4DN dataset) to convert feature matrix to the cell embedding.
     $ python ftrain.py
