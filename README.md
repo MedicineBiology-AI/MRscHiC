@@ -1,6 +1,24 @@
 # MRscHiC
 The three-dimensional genome structure plays a key role in cellular function and gene regulation. Single-cell Hi-C technology can capture genome structure information at the cell level, which provides the opportunity to study how genome structure varies among different cell types. However, few methods are well designed for single-cell Hi-C clustering, because of high sparsity, noise and heterogeneity of single-cell Hi-C data. In this manuscript, we propose a multi-scale representation learning framework, named MRscHiC, for single-cell Hi-C data representation and clustering. MRscHiC mainly contains two parts: imputation at bin level, feature extraction at chromosome and cell level. The evaluation results show that the proposed method outperforms existing state-of-the-art approaches on both human and mouse datasets.
 
+
+<!-- TOC depthFrom:1 depthTo:8 withLinks:1 updateOnSave:1 orderedList:0 -->
+
+- [MRscHiC](#mrschic)  
+	- [The environment of MRscHiC](#the-environment-of-mrschic)  
+    - [Data](#data)
+         - [Contact matrix](#contact-matrix)
+         - [Contact matrix preprocessing](#contact-matrix-preprocessing)
+    - [Input files](#input-files)
+         - [Contact matrix file](#contact-matrix-file)
+         - [Cell list file](#cell-list-file)
+    - [Usage](#usage)
+    - [Acknowledgments](#acknowledgments)
+
+<!-- /TOC -->
+
+
+
 ## The environment of MRscHiC
     Linux OS
     python 3.8.5 
@@ -12,7 +30,7 @@ The three-dimensional genome structure plays a key role in cellular function and
 * The Ramani dataset is downloaded from [GSE84920](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE84920).
 * The 4DN dataset is downloaded from https://noble.gs.washington.edu/proj/schic-topicmodel.
 
- ### contact matrix
+ ### Contact matrix
 The current single-cell Hi-C experimental data is generally stored as a two-dimensional contact matrix. The data obtained by high-throughput sequencing technologies such as Hi-C can be used to construct a contact matrix. The data information obtained by the Hi-C experiment represents the interaction information between any two sites in the whole genome (the information is usually reflected by the number of read-pairs or interaction pairs), and the information is stored in the contact matrix, which is a symmetric matrix. Each element in the contact matrix of the chromosome is said to support the number of interactions between the corresponding two chromosome fragments. For a chromosome contact matrix *M*, each element *Mij* in the matrix represents the number of read-pairs that support the interaction between two chromosome fragments *i* and *j*. As shown in Table 1, the table is a part of the contact matrix of chromosome 1 of an Oocyte cell. The number 62 in bold in the table indicates that the number of read-pairs that support the interaction between the two chromosome fragments chr1: 3000000-4000000 and chr1:3000000-4000000 is 62, and 12 in bold represents the number of read-pairs that support the interaction between the two chromosome fragments chr1: 3000000-4000000 and chr1: 4000000 -5000000 is 12. 
 
 Table 1 Part of the contact matrix. 
@@ -48,7 +66,7 @@ count:   count number or normalized weight for the interaction.
 (Note that only intra-chromosomal reads are used in MRscHiC.)  
 
 ## Input files
-### contact matrix file
+### Contact matrix file
 In this work, we process the raw data in Table 2 into the data in Table 3 to enter the script. The input data is divided into three columns, and each column is separated by a tab, respectively indicating bins and the number of read-pairs that support interaction. As shown in Table 3, the bolded data row indicates that at the 200-kb resolution, the number of read-pairs that support the interaction between the two chromosome fragments chr1: 3000000-3200000 and chr1: 3200000-3400000 is 78. The first column indicates the starting position of the fragment of the first chromosome divided by the resolution, the second column indicates the starting position of the fragment of the second chromosome divided by the resolution, and the third column indicates the number of read-pairs that support the interaction in these two fragments. The end position of the chromosomes fragments can be calculated using the start position plus the resolution.
 
 Table 3 Part of contact matrix file.
@@ -69,7 +87,7 @@ chrom2_start:  start location for fragment 2.
 count:   count number or normalized weight for the interaction.   
 (Note that the chrom1_start and chrom2_start are calculated in the following way: chrom1_start=(start location for fragment 1)/resolution.)  
 
-### cell list file
+### Cell list file
 Information in this file: the location information of the cells that are input to the script.   
 
 
@@ -94,7 +112,5 @@ Information in this file: the location information of the cells that are input t
 
 ### 3.Use cell embedding for downstream analysis.
 
-## Citation
-Zhou, J., Ma, J., Chen, Y., Cheng, C., Bao, B., Peng, J., ... & Ecker, J. R. (2019). 
-Robust single-cell Hi-C clustering by convolution-and random-walk–based imputation. 
-Proceedings of the National Academy of Sciences, 116(28), 14011-14018.
+## Acknowledgments
+We really thank the Zhou et al. open the source code of scHiCluster at this [link](https://github.com/zhoujt1994/scHiCluster). 
