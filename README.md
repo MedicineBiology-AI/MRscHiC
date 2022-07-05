@@ -1,4 +1,7 @@
 # MRscHiC
+
+**This repo is moved to [23AIBox](https://github.com/23AIBox/23AIBox-MRscHiC)**
+
 The three-dimensional genome structure plays a key role in cellular function and gene regulation. Single-cell Hi-C technology can capture genome structure information at the cell level, which provides the opportunity to study how genome structure varies among different cell types. However, few methods are well designed for single-cell Hi-C clustering, because of high sparsity, noise and heterogeneity of single-cell Hi-C data. In this manuscript, we propose a multi-scale representation learning framework, named MRscHiC, for single-cell Hi-C data representation and clustering. MRscHiC mainly contains two parts: imputation at bin level, feature extraction at chromosome and cell level. The evaluation results show that the proposed method outperforms existing state-of-the-art approaches on both human and mouse datasets.
 
 
